@@ -1,0 +1,10 @@
+resources:
+  - ../../base
+
+patches:
+  - path: patch-replicas.yaml
+
+images:
+  - name: booking-service:latest
+    newName: 396183525704.dkr.ecr.us-east-1.amazonaws.com/booking-service
+    newTag: v1

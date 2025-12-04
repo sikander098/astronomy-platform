@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: booking-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: booking-service
+  template:
+    metadata:
+      labels:
+        app: booking-service
+    spec:
+      containers:
+      - name: app
+        image: booking-service:latest # Placeholder - will be replaced by Kustomize
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DB_DSN
+          value: "host=postgres user=postgres password=password dbname=tickets port=5432 sslmode=disable"
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "64Mi"
+          limits:
+            cpu: "500m"
+            memory: "256Mi"

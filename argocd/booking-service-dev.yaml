@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: booking-service-dev
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/<YOUR_USERNAME>/astronomy-platform.git # <--- CHANGE THIS
+    targetRevision: HEAD
+    path: k8s/overlays/dev
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true    # Delete things that aren't in Git
+      selfHeal: true # Fix things that drift manually
+    syncOptions:
+      - CreateNamespace=true
