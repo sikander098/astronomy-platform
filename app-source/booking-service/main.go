@@ -100,6 +100,6 @@ func main() {
 	r.POST("/book", bookTicket)
 
 	// Start Server
-	log.Info("Booking Service starting on :8080")
+	log.Info("Booking Service v2 (CI/CD) starting on :8080")
 	r.Run(":8080")
 }
