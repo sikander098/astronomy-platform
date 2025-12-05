@@ -1,0 +1,11 @@
+resources:
+  - ../../base
+
+patches:
+  - path: patch-replicas.yaml
+
+# In Prod, we PIN the version. We never use "latest".
+images:
+  - name: booking-service:latest
+    newName: 396183525704.dkr.ecr.us-east-1.amazonaws.com/booking-service
+    newTag: v1 # This will be updated by the Release Pipeline

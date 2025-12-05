@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: booking-service
+spec:
+  replicas: 3 # Prod needs to survive a node failure
+  template:
+    spec:
+      containers:
+      - name: app
+        resources:
+          requests:
+            cpu: "200m" # Guaranteed resources
+            memory: "128Mi"
+          limits:
+            cpu: "1000m"
+            memory: "512Mi"

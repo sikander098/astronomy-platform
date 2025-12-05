@@ -1,5 +1,5 @@
-# Dev Environment - Terraform Configuration
-# Deploys VPC and EKS cluster for the development environment
+# Prod Environment - Terraform Configuration
+# Deploys VPC and EKS cluster for the production environment
 
 terraform {
   required_version = ">= 1.0"
@@ -22,7 +22,7 @@ terraform {
   # S3 backend for remote state storage
   backend "s3" {
     bucket = "sikander-astronomy-tf-state"
-    key    = "dev/terraform.tfstate"
+    key    = "prod/terraform.tfstate"
     region = "us-east-1"
     # Uncomment these for production use:
     # encrypt        = true
@@ -36,7 +36,7 @@ provider "aws" {
 
   default_tags {
     tags = {
-      Environment = "dev"
+      Environment = "prod"
       Project     = "astronomy"
       ManagedBy   = "Terraform"
     }
@@ -81,30 +81,30 @@ provider "kubernetes" {
 module "vpc" {
   source = "../../modules/vpc"
 
-  vpc_cidr         = "10.0.0.0/16"
-  environment_name = "dev"
-  az_count         = 2
+  vpc_cidr         = "10.1.0.0/16" # Distinct CIDR for Prod
+  environment_name = "prod"
+  az_count         = 3 # Multi-AZ for High Availability
 }
 
 # EKS Module
 module "eks" {
   source = "../../modules/eks"
 
-  cluster_name    = "astronomy-dev"
+  cluster_name    = "astronomy-prod"
   cluster_version = "1.28"
 
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
 
-  instance_types = ["t3.medium", "t3a.medium"]
-  capacity_type  = "ON_DEMAND"  # Using ON_DEMAND for stability
+  instance_types = ["t3.medium", "t3.large"]
+  capacity_type  = "ON_DEMAND" # Critical for Prod stability
 
-  min_size     = 2
-  max_size     = 3
-  desired_size = 2
+  min_size     = 3
+  max_size     = 6
+  desired_size = 3
 }
 
-# Crossplane Module
+# Crossplane Module (Optional for Prod Plan, but good to have)
 module "crossplane" {
   source = "../../modules/crossplane"
 
@@ -134,7 +134,7 @@ module "velero" {
   cluster_oidc_provider_arn = module.eks.oidc_provider_arn
   
   tags = {
-    Environment = "dev"
+    Environment = "prod"
     Project     = "astronomy"
     ManagedBy   = "Terraform"
   }
