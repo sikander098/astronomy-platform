@@ -3,6 +3,7 @@ resources:
 
 patches:
 - path: patch-replicas.yaml
+- path: patch-db-secret.yaml
 
 images:
 - name: booking-service:latest

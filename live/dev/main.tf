@@ -9,6 +9,14 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 5.0"
     }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "~> 2.12"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~> 2.25"
+    }
   }
 
   # S3 backend for remote state storage
@@ -32,6 +40,40 @@ provider "aws" {
       Project     = "astronomy"
       ManagedBy   = "Terraform"
     }
+  }
+}
+
+# Helm Provider Configuration
+provider "helm" {
+  kubernetes {
+    host                   = module.eks.cluster_endpoint
+    cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
+    exec {
+      api_version = "client.authentication.k8s.io/v1beta1"
+      command     = "aws"
+      args = [
+        "eks",
+        "get-token",
+        "--cluster-name",
+        module.eks.cluster_name
+      ]
+    }
+  }
+}
+
+# Kubernetes Provider Configuration
+provider "kubernetes" {
+  host                   = module.eks.cluster_endpoint
+  cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    command     = "aws"
+    args = [
+      "eks",
+      "get-token",
+      "--cluster-name",
+      module.eks.cluster_name
+    ]
   }
 }
 
@@ -60,4 +102,15 @@ module "eks" {
   min_size     = 2
   max_size     = 3
   desired_size = 2
+}
+
+# Crossplane Module
+module "crossplane" {
+  source = "../../modules/crossplane"
+
+  cluster_name              = module.eks.cluster_name
+  cluster_oidc_provider_arn = module.eks.oidc_provider_arn
+  cluster_oidc_provider_url = module.eks.cluster_oidc_issuer_url
+
+  depends_on = [module.eks]
 }
