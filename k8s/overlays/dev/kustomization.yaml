@@ -1,10 +1,12 @@
 resources:
-  - ../../base
+- ../../base
 
 patches:
-  - path: patch-replicas.yaml
+- path: patch-replicas.yaml
 
 images:
-  - name: booking-service:latest
-    newName: 396183525704.dkr.ecr.us-east-1.amazonaws.com/booking-service
-    newTag: v1
+- name: booking-service:latest
+  newName: 396183525704.dkr.ecr.us-east-1.amazonaws.com/booking-service
+  newTag: 7cd2215fc527bbaf30529e599333a7348ac76a1b
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
