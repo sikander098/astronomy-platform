@@ -89,6 +89,7 @@ spec:
         - fromConnectionSecretKey: password
         - fromConnectionSecretKey: endpoint
         - fromConnectionSecretKey: port
+        - fromConnectionSecretKey: address
       patches:
         # Map size parameter to instance class
         - type: FromCompositeFieldPath
