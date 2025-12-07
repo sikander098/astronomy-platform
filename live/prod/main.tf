@@ -133,6 +133,9 @@ module "velero" {
   cluster_name              = module.eks.cluster_name
   cluster_oidc_provider_arn = module.eks.oidc_provider_arn
   
+  role_name   = "velero-server-role-prod"
+  policy_name = "velero-server-policy-prod"
+  
   tags = {
     Environment = "prod"
     Project     = "astronomy"

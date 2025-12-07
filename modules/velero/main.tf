@@ -39,7 +39,7 @@ module "velero_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name = "velero-server-role"
+  role_name = var.role_name
 
   role_policy_arns = {
     velero = aws_iam_policy.velero.arn
@@ -56,7 +56,7 @@ module "velero_irsa" {
 }
 
 resource "aws_iam_policy" "velero" {
-  name        = "velero-server-policy"
+  name        = var.policy_name
   description = "IAM policy for Velero server"
 
   policy = jsonencode({

@@ -20,6 +20,18 @@ variable "service_account_name" {
   default     = "velero-server"
 }
 
+variable "role_name" {
+  description = "Name of the IAM role for Velero"
+  type        = string
+  default     = "velero-server-role"
+}
+
+variable "policy_name" {
+  description = "Name of the IAM policy for Velero"
+  type        = string
+  default     = "velero-server-policy"
+}
+
 variable "tags" {
   description = "Tags to apply to resources"
   type        = map(string)
