@@ -96,28 +96,17 @@ ip-10-1-6-183.ec2.internal   Ready    <none>   25h   v1.28.15-eks-c39b1d0   10.1
 
 ## 📸 Additional Screenshots to Capture (Optional)
 
-### **ArgoCD Dashboard (Requires Port-Forward)**
+### **ArgoCD Dashboard - Production Application**
 
-To capture the ArgoCD UI screenshot:
+![ArgoCD Dashboard](../docs/images/argocd-dashboard-prod.png)
 
-```bash
-# 1. Start port-forwarding in a separate terminal
-kubectl port-forward svc/argocd-server -n argocd 8080:443
-
-# 2. Get the admin password
-kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
-# Password: kZmwAJCBtkJCWUjq
-
-# 3. Open browser to: https://localhost:8080
-# 4. Login: admin / kZmwAJCBtkJCWUjq
-# 5. Take screenshot of Applications page
-```
-
-**What to capture:**
-- Applications list showing booking-service-prod
-- Sync status (Synced)
-- Health status (Healthy)
-- Last sync time
+**What this proves:**
+- ✅ ArgoCD UI showing booking-service-prod application
+- ✅ Application status: **Synced** and **Healthy**
+- ✅ Visual tree view of Kubernetes resources (Deployment, Service, Pods)
+- ✅ GitOps workflow successfully managing production
+- ✅ Last sync timestamp visible
+- ✅ Git commit hash tracked (729b200)
 
 ---
 
